@@ -30,6 +30,25 @@ public class HomesCommand {
                    player.openInventory(homesInventoryHolder.getInventory());
                 });
 
+        final Command.Builder<PlayerSource> homesTest = homes
+                .senderType(PlayerSource.class)
+                .literal("test")
+                .handler(commandContext -> {
+                           final Player player = commandContext.sender().source();
+                           final User user = User.from(player.getUniqueId());
+
+                           for (int i = 0; i < 30; i++) {
+                               final Home home = new Home(UUID.randomUUID());
+
+                               home.setName("Test " + i);
+                               home.setSafeLocation(new SafeLocation(player.getWorld().getUID(), player.getX(), player.getY(), player.getZ(), player.getPitch(), player.getYaw()));
+
+                               user.addHome(home);
+                           }
+
+                        });
+
         commandManager.command(homesView);
+        commandManager.command(homesTest);
     }
 }
